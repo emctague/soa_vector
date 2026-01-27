@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.1)
-project(flat_tree)
+project(soa_vector)
 
 set(CMAKE_CXX_STANDARD 23)
 
