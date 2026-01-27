@@ -1,0 +1,11 @@
+cmake-build-*/
+build/
+bin/
+out/
+
+.idea/
+*.iws
+*.iml
+*.ipr
+
+.DS_Store
