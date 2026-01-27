@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include <memory>
 #include <tuple>
 
@@ -17,14 +16,6 @@ class soa_vector {
 
     void resize_to_capacity() {
         std::apply([&](auto& ...x){(resize_in_place(x, capacity_), ...);} , pointers_);
-    }
-
-    // Temporary, because of a bug with memory management.
-    template<typename T>
-    static void dbg_free(T* pointer) {
-        std::cerr << "Freeing: " << (void*)pointer << std::endl;
-        std::free(pointer);
-        std::cerr << "Done Freeing it!" << std::endl;
     }
 
 public:
@@ -84,6 +75,6 @@ public:
     }
 
     ~soa_vector() {
-        std::apply([](auto ...ptr){(dbg_free(ptr), ...);} , pointers_);
+        std::apply([](auto ...ptr){(std::free(ptr), ...);} , pointers_);
     }
 };
