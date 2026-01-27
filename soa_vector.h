@@ -19,6 +19,7 @@ class soa_vector {
         std::apply([&](auto& ...x){(resize_in_place(x, capacity_), ...);} , pointers_);
     }
 
+    // Temporary, because of a bug with memory management.
     template<typename T>
     static void dbg_free(T* pointer) {
         std::cerr << "Freeing: " << (void*)pointer << std::endl;
