@@ -1,17 +1,19 @@
 # soa_vector
 
-soa_vector is a header-only library defining the `soa_vector<K, V...>` type.
-
-It makes managing a
+soa_vector is a templated data-type that makes managing a
 [structure-of-arrays](https://en.wikipedia.org/wiki/AoS_and_SoA)
-simple.
+simple in C++.
 
 To install, simply copy `soa_vector.h` from this repository.
 
 ## Important Caveats
 
-`soa_vector` does not respect move semantics or call destructors.
+`soa_vector` **does not** respect move semantics or call destructors.
 It does not perform any bounds checking.
+
+`soa_vector` currently has no mechanisms for iteration, reordering,
+removal, or (non-appending) insertion. At present, you can treat it like an
+append-only buffer.
 
 I am currently encountering strange hanging and crashing issues when an
 `soa_vector` is destroyed on Windows.
