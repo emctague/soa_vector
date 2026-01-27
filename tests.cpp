@@ -14,6 +14,7 @@ TEST_CASE("Tree", "[tests]") {
 
     tree.emplace_back(0, 6, 0);
     REQUIRE(tree.size() == 2);
+    REQUIRE(tree.capacity() >= 2);
     REQUIRE(tree.at<cols::parent>(0) == 0);
     REQUIRE(tree.at<cols::parent>(1) == 0);
     REQUIRE(tree.at<cols::value>(0) == 2);

@@ -39,7 +39,7 @@ public:
     /// Append a new set of values to the end of the vector.
     size_t emplace_back(const Ts... values) {
         if (size_ >= capacity_) {
-            capacity_ = std::max<size_t>(capacity_, 1) * 3 / 2;
+            capacity_ = (capacity_ + 1) * 3 / 2;
             resize_to_capacity();
         }
 
@@ -53,6 +53,9 @@ public:
 
     /// Get the current number of items in the vector.
     [[nodiscard]] size_t size() const { return size_; }
+
+    /// Get the underlying capacity of the vector.
+    [[nodiscard]] size_t capacity() const { return capacity_; }
 
     /// Check if the vector is empty.
     [[nodiscard]] bool empty() const { return size_ == 0; }
