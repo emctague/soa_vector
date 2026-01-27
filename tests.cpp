@@ -11,6 +11,7 @@ TEST_CASE("Tree", "[tests]") {
     tree.emplace_back(0, 2, 0);
     REQUIRE(!tree.empty());
     REQUIRE(tree.size() == 1);
+    REQUIRE(tree.capacity() >= 1);
 
     tree.emplace_back(0, 6, 0);
     REQUIRE(tree.size() == 2);
@@ -21,6 +22,9 @@ TEST_CASE("Tree", "[tests]") {
     REQUIRE(tree.at<cols::value>(1) == 6);
     REQUIRE(tree.at<cols::sum_with_parents>(0) == 0);
     REQUIRE(tree.at<cols::sum_with_parents>(1) == 0);
+
+    // Compute a simple formula for every entry:
+    // sum(n) = sum(parent(n)) + value(n)
 
     tree.at<cols::sum_with_parents>(0) = tree.at<cols::value>(0);
 
@@ -33,4 +37,13 @@ TEST_CASE("Tree", "[tests]") {
 
     REQUIRE(tree.at<cols::sum_with_parents>(0) == 2);
     REQUIRE(tree.at<cols::sum_with_parents>(1) == 8);
+}
+
+TEST_CASE("Capacity Grows Properly", "[tests]") {
+    soa_vector<int, int> vec;
+    for (int i = 0; i < 1024; i++) {
+        REQUIRE(vec.size() == i);
+        REQUIRE(vec.capacity() >= i);
+        vec.emplace_back(i);
+    }
 }
