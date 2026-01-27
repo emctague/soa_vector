@@ -24,7 +24,8 @@ TEST_CASE("Tree", "[tests]") {
     REQUIRE(tree.at<cols::sum_with_parents>(1) == 0);
 
     // Compute a simple formula for every entry:
-    // sum(n) = sum(parent(n)) + value(n)
+    // sum(i) = sum(parent(i)) + value(i)
+    // sum(0) = value(0)
 
     tree.at<cols::sum_with_parents>(0) = tree.at<cols::value>(0);
 
