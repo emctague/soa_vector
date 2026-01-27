@@ -40,11 +40,16 @@ TEST_CASE("Tree", "[tests]") {
     REQUIRE(tree.at<cols::sum_with_parents>(1) == 8);
 }
 
-TEST_CASE("Capacity Grows Properly", "[tests]") {
+TEST_CASE("Growth", "[tests]") {
     soa_vector<int, int> vec;
     for (int i = 0; i < 1024; i++) {
         REQUIRE(vec.size() == i);
         REQUIRE(vec.capacity() >= i);
         vec.emplace_back(i);
+    }
+
+    // Validate that all entries were retained correctly.
+    for (int i = 0; i < 1024; i++) {
+        REQUIRE(vec.at<0>(i) == i);
     }
 }
