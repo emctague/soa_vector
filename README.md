@@ -16,7 +16,9 @@ removal, or (non-appending) insertion. At present, you can treat it like an
 append-only buffer.
 
 I am currently encountering strange hanging and crashing issues when an
-`soa_vector` is destroyed on Windows.
+`soa_vector` is destroyed on builds compiled for debugging with MSVC on windows.
+Oddly, MinGW builds, release and RelWithDebInfo MSVC builds, and builds targeting other
+platforms work just fine.
 
 ## Example
 
