@@ -116,6 +116,11 @@ namespace eam {
             return std::get<static_cast<size_t>(Key)>(pointers_)[index];
         }
 
+        /// Remove the last item from the vector.
+        void pop_back() {
+            size_ = std::max<size_t>(size_ - 1, 0);
+        }
+
         /// Reset the size of the multi_vector to zero, without freeing anything.
         void clear() { size_ = 0; }
     };

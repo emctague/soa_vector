@@ -6,6 +6,21 @@
 
 #include "soa_vector.h"
 
+TEST_CASE("Pop Back", "[tests]") {
+    eam::soa_vector<int, int, char> vec;
+    REQUIRE(vec.empty());
+    vec.emplace_back(0, 'a');
+    REQUIRE(vec.size() == 1);
+    vec.emplace_back(1, 'b');
+    REQUIRE(vec.size() == 2);
+    vec.pop_back();
+    REQUIRE(vec.size() == 1);
+    vec.emplace_back(2, 'c');
+    REQUIRE(vec.size() == 2);
+    REQUIRE(vec.at<0>(1) == 2);
+    REQUIRE(vec.at<1>(1) == 'c');
+}
+
 TEST_CASE("Tree", "[tests]") {
     enum class cols { parent, value, sum_with_parents };
     eam::soa_vector<cols, int, int, int> tree;
