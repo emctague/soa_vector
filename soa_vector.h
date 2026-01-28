@@ -104,6 +104,12 @@ namespace eam {
             return std::get<static_cast<size_t>(Key)>(pointers_)[index];
         }
 
+        /// Access the item at a particular index and key, as a value.
+        template<KeyEnum Key>
+        [[nodiscard]] auto at(const size_t index) const {
+            return std::get<static_cast<size_t>(Key)>(pointers_)[index];
+        }
+
         /// Access the item at a particular index and key, immutable.
         template<KeyEnum Key>
         [[nodiscard]] const auto& at(const size_t index) const {
