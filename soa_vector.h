@@ -121,6 +121,13 @@ namespace eam {
             size_ = std::max<size_t>(size_ - 1, 0);
         }
 
+        /// Remove the item at the given index from the vector, swapping the
+        /// very last item in the vector to take its place.
+        void swap_and_pop(const size_t index) {
+            pop_back();
+            std::apply([&](auto... ptr) { ((ptr[index] = ptr[size_]), ...); }, pointers_);
+        }
+
         /// Reset the size of the multi_vector to zero, without freeing anything.
         void clear() { size_ = 0; }
     };

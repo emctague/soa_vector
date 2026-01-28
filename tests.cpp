@@ -6,13 +6,22 @@
 
 #include "soa_vector.h"
 
+TEST_CASE("Swap and Pop", "[tests]") {
+    eam::soa_vector<int, int, char> vec;
+    vec.emplace_back(0, 'a');
+    vec.emplace_back(1, 'b');
+    vec.swap_and_pop(0);
+    REQUIRE(vec.size() == 1);
+    REQUIRE(vec.at<0>(0) == 1);
+    REQUIRE(vec.at<1>(0) == 'b');
+    vec.swap_and_pop(0);
+    REQUIRE(vec.empty());
+}
+
 TEST_CASE("Pop Back", "[tests]") {
     eam::soa_vector<int, int, char> vec;
-    REQUIRE(vec.empty());
     vec.emplace_back(0, 'a');
-    REQUIRE(vec.size() == 1);
     vec.emplace_back(1, 'b');
-    REQUIRE(vec.size() == 2);
     vec.pop_back();
     REQUIRE(vec.size() == 1);
     vec.emplace_back(2, 'c');
