@@ -1,5 +1,9 @@
+#include <catch2/benchmark/catch_benchmark.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators_all.hpp>
 #include <iostream>
+#include <random>
+
 #include "soa_vector.h"
 
 TEST_CASE("Tree", "[tests]") {
@@ -52,4 +56,56 @@ TEST_CASE("Growth", "[tests]") {
     for (int i = 0; i < 1024; i++) {
         REQUIRE(vec.at<0>(i) == i);
     }
+}
+
+TEST_CASE("Bench: SoA vs AoS simple iteration with padding", "[!benchmark]") {
+    // Generate a seed for populating our big list.
+    const auto random_seed = GENERATE(take(10, random(0, 9999)));
+    std::mt19937 gen(random_seed);
+
+    struct person {
+        const char *name;
+        int age;
+        int importance;
+    };
+
+    enum class field { name, age, importance };
+
+    static constexpr std::array names {
+        "Garry",
+        "Joshua",
+        "Steven"
+    };
+
+    eam::soa_vector<field, const char*, int, int> soa;
+    std::vector<person> aos;
+
+    // Populate both!
+    for (int i = 0; i < 1000000; i++) {
+        const auto age = std::uniform_int_distribution{1, 80}(gen);
+        const auto importance = std::uniform_int_distribution{1, 5}(gen);
+        const auto name_idx = std::uniform_int_distribution<>{0, names.size() - 1}(gen);
+        soa.emplace_back(names[name_idx], age, importance);
+        aos.emplace_back(names[name_idx], age, importance);
+    }
+
+    long total1{}, total2{};
+
+    BENCHMARK("Non-SoA") {
+        long sum1 = 0;
+        for (int i = 0; i < aos.size(); i++) {
+            sum1 += aos[i].age * aos[i].importance;
+        }
+        total1 = sum1;
+    };
+
+    BENCHMARK("SoA") {
+        long sum2 = 0;
+        for (int i = 0; i < soa.size(); i++) {
+            sum2 += soa.at<field::age>(i) * soa.at<field::importance>(i);
+        }
+        total2 = sum2;
+    };
+
+    REQUIRE(total1 == total2);
 }
