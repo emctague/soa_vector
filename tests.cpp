@@ -109,3 +109,45 @@ TEST_CASE("Bench: SoA vs AoS simple iteration with padding", "[!benchmark]") {
 
     REQUIRE(total1 == total2);
 }
+
+TEST_CASE("Bench: SoA vs AoS tree structure", "[!benchmark]") {
+    // Generate a seed for populating our big list.
+    const auto random_seed = GENERATE(take(10, random(0, 9999)));
+    std::mt19937 gen(random_seed);
+
+    struct node {
+        unsigned parent;
+        unsigned value;
+        unsigned sum;
+    };
+
+    enum class field { parent, value, sum };
+
+
+    eam::soa_vector<field, unsigned, unsigned, unsigned> soa;
+    std::vector<node> aos;
+
+    // Populate both!
+    for (int i = 0; i < 1000000; i++) {
+        const unsigned parent = std::uniform_int_distribution{0, i - 1}(gen);
+        const unsigned value = std::uniform_int_distribution{0, 2048}(gen);
+        soa.emplace_back(parent, value, 0);
+        aos.emplace_back(parent, value, 0);
+    }
+
+    BENCHMARK("Non-SoA") {
+        aos[0].sum = aos[0].value;
+
+        for (int i = 1; i < aos.size(); i++) {
+            aos[i].sum = aos[aos[i].parent].sum + aos[i].value;
+        }
+    };
+
+    BENCHMARK("SoA") {
+        soa.at<field::sum>(0) = soa.at<field::value>(0);
+
+        for (int i = 1; i < soa.size(); i++) {
+            soa.at<field::sum>(i) = soa.at<field::sum>(soa.at<field::parent>(i)) + soa.at<field::value>(i);
+        }
+    };
+}
