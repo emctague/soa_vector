@@ -1,10 +1,10 @@
 #include <catch2/catch_test_macros.hpp>
-#include "soa_vector.h"
 #include <iostream>
+#include "soa_vector.h"
 
 TEST_CASE("Tree", "[tests]") {
     enum class cols { parent, value, sum_with_parents };
-    soa_vector<cols, int, int, int> tree;
+    eam::soa_vector<cols, int, int, int> tree;
 
     REQUIRE(tree.empty());
 
@@ -41,7 +41,7 @@ TEST_CASE("Tree", "[tests]") {
 }
 
 TEST_CASE("Growth", "[tests]") {
-    soa_vector<int, int> vec;
+    eam::soa_vector<int, int> vec;
     for (int i = 0; i < 1024; i++) {
         REQUIRE(vec.size() == i);
         REQUIRE(vec.capacity() >= i);
