@@ -3,6 +3,7 @@
 #include <catch2/generators/catch_generators_all.hpp>
 #include <iostream>
 #include <random>
+#include <array>
 
 #include "soa_vector.h"
 
